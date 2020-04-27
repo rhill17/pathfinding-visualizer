@@ -1,0 +1,52 @@
+.grid {
+    margin: 25px 0 0;
+}
+
+.header {
+    width: 100%;
+    height: 100px;
+    display: block;
+    background-color: #101010;
+}
+
+.inner_header {
+    width: 85%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.title {
+    height: 100%;
+    display: table;
+    float: left;
+}
+
+.title h1 {
+    color: white;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.options {
+    display: table;
+    float: right;
+    height: 100%;
+    vertical-align: middle;
+    color: white;
+}
+
+.options button {
+    display: table-cell;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    overflow: hidden;
+    vertical-align: middle;
+    font-size: larger;
+    padding-right: 0px;
+}
