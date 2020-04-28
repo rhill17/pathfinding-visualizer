@@ -4,8 +4,8 @@ import Node from './Node/Node';
 import './PathfindingVisualizer.css';
 
 export default class PathfindingVisualizer extends Component {
-    constructor(parameters) {
-        super(parameters);
+    constructor(props) {
+        super(props);
         this.state = {
             grid: [],
         };
@@ -17,7 +17,13 @@ export default class PathfindingVisualizer extends Component {
         for (let row = 0; row < 20; row++) {
             const currentRow = [];
             for (let column = 0; column < 60; column++) {
-                currentRow.push([]);
+                const currentNode =  {
+                    row,
+                    column,
+                    isStart: row === 10 && column === 10,
+                    isFinish: row === 10 && column === 50
+                };
+                currentRow.push(currentNode);
             }
             grid.push(currentRow);
         }
@@ -27,6 +33,8 @@ export default class PathfindingVisualizer extends Component {
 
     render() {
         const {grid} = this.state;
+        console.log(grid);
+
         return (
             <>
                 <div className="header">
@@ -41,8 +49,16 @@ export default class PathfindingVisualizer extends Component {
                 </div>
                 <div className="grid">
                     {grid.map((row, rowIndex) => {
-                        return <div>
-                            {row.map((node, nodeIndex) => <Node></Node>)}
+                        return <div key={rowIndex}>
+                            {row.map((node, nodeIndex) => {
+                                const {isStart, isFinish} = node;
+                                return (
+                                    <Node
+                                        key={nodeIndex}
+                                        isStart={isStart}
+                                        isFinish={isFinish}></Node>
+                                );
+                            })}
                         </div>
                     })}
                 </div>
