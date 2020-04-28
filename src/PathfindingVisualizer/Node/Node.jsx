@@ -9,11 +9,17 @@ export default class Node extends Component {
     }
 
     render() {
-        const {isStart, isFinish} = this.props;
-        const specificName = isStart ? 'node_start' : isFinish ? 'node_finish' : '';
+        const {row, column, isStart, isFinish, isWall} = this.props;
+        const specificName = isStart ? 'node_start' : 
+            isFinish ? 'node_finish' :
+            isWall ? 'node-wall' :
+            '';
 
         return (
-            <div className={`node ${specificName}`}></div>
+            <div 
+                id={`node-${row}-${column}`}
+                className={`node ${specificName}`}>
+            </div>
         );
     }
 }

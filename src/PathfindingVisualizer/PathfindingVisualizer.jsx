@@ -25,18 +25,42 @@ export default class PathfindingVisualizer extends Component {
     // mouse handler
 
 
-    // reset button
+    // reset grid button
     resetGrid() {
-
+        const {grid} = this.state
+        for (const row of grid) {
+            for (const node of row) {
+                if (node.isStart) document.getElementById(`node-${node.row}-${node.column}`).className='node node_start';
+                else if (node.isFinish) document.getElementById(`node-${node.row}-${node.column}`).className='node node_finish';
+                else document.getElementById(`node-${node.row}-${node.column}`).className='node';
+            }
+        }
+        console.log("reset" + grid);
     }
 
 
     visualizeDijkstras(visitedNodes, shortestPath) {
-        
+        for (let i = 0; i <= visitedNodes.length; i++) {
+            if (i === visitedNodes.length) {
+              setTimeout(() => {
+                this.visualizeShortestPath(shortestPath);
+              }, 10 * i);
+              return;
+            }
+            setTimeout(() => {
+              const node = visitedNodes[i];
+              document.getElementById(`node-${node.row}-${node.column}`).className='node node_visited';
+            }, 10 * i);
+          }
     }
 
     visualizeShortestPath(shortestPath) {
-
+        for (let i = 0; i < shortestPath.length; i++) {
+            setTimeout(() => {
+              const node = shortestPath[i];
+              document.getElementById(`node-${node.row}-${node.column}`).className ='node node_shortest_path';
+            }, 50 * i);
+          }
     }
 
 
@@ -47,12 +71,14 @@ export default class PathfindingVisualizer extends Component {
         const visitedNodes = dijkstras(grid, startNode, finishNode);
         const shortestPath = getShortestPath(finishNode);
         this.visualizeDijkstras(visitedNodes, shortestPath);
+        console.log("dijkstras" + grid);
     }
 
 
 
     render() {
         const {grid} = this.state;
+        console.log("render" + grid);
 
         return (
             <>
@@ -64,6 +90,9 @@ export default class PathfindingVisualizer extends Component {
                         <div className="options">
                             <button onClick={() => this.runDijkstras()}>
                                 Visualize Algorithm!
+                            </button>
+                            <button onClick={() => this.resetGrid()}>
+                                Reset Grid
                             </button>
                         </div>
                     </div>
