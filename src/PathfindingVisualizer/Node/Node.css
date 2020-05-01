@@ -77,3 +77,39 @@
         background-color: rgb(255, 254, 106);
     }
 }
+
+.example_start {
+    background-color: green;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.example_end {
+    background-color: red;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;  
+}
+
+.example_wall {
+    background-color: darkslategrey;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.example_visited {
+    background-color: rgba(0, 190, 218, 0.75);
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.example_path {
+    background-color: rgb(255, 254, 106);
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+

@@ -4,10 +4,14 @@ import {dijkstras, getShortestPath} from '../Algorithms/dijkstras';
 
 import './PathfindingVisualizer.css';
 
-const START_NODE_ROW = 10;
-const START_NODE_COLUMN = 10;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COLUMN = 50;
+// constants
+const NUMBER_OF_ROWS = 19;
+const NUMBER_OF_COLUMNS = 60;
+
+const START_NODE_ROW = 9;
+const START_NODE_COLUMN = 11;
+const FINISH_NODE_ROW = 9;
+const FINISH_NODE_COLUMN = 49;
 
 export default class PathfindingVisualizer extends Component {
     constructor(props) {
@@ -27,6 +31,7 @@ export default class PathfindingVisualizer extends Component {
 
     // reset grid button
     resetGrid() {
+        // TODO - currently can reset mid run and clears what was on screen then continues to finish
         const {grid} = this.state
         for (const row of grid) {
             for (const node of row) {
@@ -35,7 +40,6 @@ export default class PathfindingVisualizer extends Component {
                 else document.getElementById(`node-${node.row}-${node.column}`).className='node';
             }
         }
-        console.log("reset" + grid);
     }
 
 
@@ -71,14 +75,12 @@ export default class PathfindingVisualizer extends Component {
         const visitedNodes = dijkstras(grid, startNode, finishNode);
         const shortestPath = getShortestPath(finishNode);
         this.visualizeDijkstras(visitedNodes, shortestPath);
-        console.log("dijkstras" + grid);
     }
 
 
 
     render() {
         const {grid} = this.state;
-        console.log("render" + grid);
 
         return (
             <>
@@ -95,6 +97,20 @@ export default class PathfindingVisualizer extends Component {
                                 Reset Grid
                             </button>
                         </div>
+                    </div>
+                </div>
+                <div className="table_of_contents">
+                    <div className="key">
+                        <em> Start Node: </em>
+                        <Node isExampleStart={true}></Node>
+                        <em> End Node: </em>
+                        <Node isExampleEnd={true}></Node>
+                        <em> Wall: </em>
+                        <Node isExampleWall={true}></Node>
+                        <em> Visited Node: </em>
+                        <Node isExampleVisited={true}></Node>
+                        <em> Shortest Path: </em>
+                        <Node isExamplePath={true}></Node>
                     </div>
                 </div>
                 <div className="grid">
@@ -122,9 +138,9 @@ export default class PathfindingVisualizer extends Component {
 
 const constructGrid = () => {
     const grid = [];
-        for (let row = 0; row < 20; row++) {
+        for (let row = 0; row < NUMBER_OF_ROWS; row++) {
             const currentRow = [];
-            for (let column = 0; column < 60; column++) {
+            for (let column = 0; column < NUMBER_OF_COLUMNS; column++) {
                 currentRow.push(createNode(row, column));
             }
             grid.push(currentRow);
@@ -142,6 +158,9 @@ const createNode = (row, column) => {
         isWall: false,
         distance: Infinity,
         previousNode: null,
+        isExampleStart: false,
+        isExampleEnd: false,
+        isExampleWall: false,
     };
     return node;
 }

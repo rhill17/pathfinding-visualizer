@@ -1,5 +1,5 @@
 .grid {
-    margin: 25px 0 0;
+    margin: 0 auto;
 }
 
 .header {
@@ -27,6 +27,7 @@
     height: 100%;
     display: table-cell;
     vertical-align: middle;
+    text-shadow: 1px 2px 2px rgb(19, 219, 219);
 }
 
 .options {
@@ -48,6 +49,30 @@
     overflow: hidden;
     vertical-align: middle;
     font-size: larger;
-    padding-right: 0px;
-    padding-left: 50px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.table_of_contents {
+    width: 60%;
+    height: 55px;
+    margin: 0 auto;
+    display: block;
+}
+
+
+.key {
+    display: table;
+    height: 100%;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.key em {
+    height: 100%;
+    padding-left: 40px;
+    padding-right: 7px;
+    display: table-cell;
+    vertical-align: middle;
 }

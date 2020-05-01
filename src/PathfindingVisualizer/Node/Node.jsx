@@ -9,10 +9,25 @@ export default class Node extends Component {
     }
 
     render() {
-        const {row, column, isStart, isFinish, isWall} = this.props;
+        const {row, 
+            column, 
+            isStart, 
+            isFinish, 
+            isWall, 
+            isExampleStart, 
+            isExampleEnd, 
+            isExampleWall,
+            isExampleVisited,
+            isExamplePath} = this.props;
+
         const specificName = isStart ? 'node_start' : 
             isFinish ? 'node_finish' :
-            isWall ? 'node-wall' :
+            isWall ? 'node_wall' :
+            isExampleStart ? 'example_start' :
+            isExampleEnd ? 'example_end' :
+            isExampleWall ? 'example_wall' :
+            isExampleVisited ? 'example_visited' :
+            isExamplePath ? 'example_path' :
             '';
 
         return (
