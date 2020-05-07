@@ -53,6 +53,10 @@
     padding-left: 25px;
 }
 
+.options button:hover {
+    background-color: #222121;
+}
+
 .table_of_contents {
     width: 60%;
     height: 55px;

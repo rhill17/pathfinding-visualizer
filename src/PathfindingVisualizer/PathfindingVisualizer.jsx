@@ -27,7 +27,7 @@ export default class PathfindingVisualizer extends Component {
     }
 
     // mouse handler
-
+    
 
     // reset grid button
     resetGrid() {
@@ -37,6 +37,7 @@ export default class PathfindingVisualizer extends Component {
             for (const node of row) {
                 if (node.isStart) document.getElementById(`node-${node.row}-${node.column}`).className='node node_start';
                 else if (node.isFinish) document.getElementById(`node-${node.row}-${node.column}`).className='node node_finish';
+                else if (node.isWall) document.getElementById(`node-${node.row}-${node.column}`).className='node node_wall';
                 else document.getElementById(`node-${node.row}-${node.column}`).className='node';
             }
         }
@@ -69,6 +70,7 @@ export default class PathfindingVisualizer extends Component {
 
 
     runDijkstras() {
+        this.resetGrid();
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COLUMN];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COLUMN];

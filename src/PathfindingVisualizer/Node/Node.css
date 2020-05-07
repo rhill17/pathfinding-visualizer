@@ -26,23 +26,28 @@
 
 @keyframes visitedAnimation{
     0% {
-        transform: scale(0.3);
-        background-color: rgba(0, 0, 66, 0.75);
-        border-radius: 100%;
+        transform: scale(0.25);
+        background-color: rgba(0, 0, 43, 0.75);
+    }
+
+    25% {
+        transform: scale(1);
+        background-color: rgba(0, 0, 97, 0.75)
     }
     
     50% {
-        background-color: rgba(17, 104, 217, 0.75);
+        transform: scale(1.5);
+        background-color: rgba(0, 57, 131, 0.75);
     }
     
     75% {
-        transform: scale(1.2);
-        background-color: rgba(0, 217, 159, 0.75);
+        transform: scale(1.25);
+        background-color: rgba(0, 124, 196, 0.75);
     }
     
     100% {
         transform: scale(1);
-        background-color: rgba(0, 190, 218, 0.75);
+        background-color: rgba(0, 162, 255, 0.75);
     } 
 }
 
@@ -52,24 +57,24 @@
 
 .node_shortest_path {
     animation-name: shortestPath;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-out;
+    animation-duration: 2.5s;
+    animation-timing-function: linear;
     animation-delay: 0;
     animation-direction: alternate;
-    animation-iteration-count: 1;
+    animation-iteration-count: infinite;
     animation-fill-mode: forwards;
     animation-play-state: running;
 }
   
 @keyframes shortestPath {
     0% {
-        transform: scale(0.6);
-        background-color: rgb(255, 254, 106);
+        transform: scale(1.5);
+        background-color: rgb(138, 138, 58);
     }
   
     50% {
-        transform: scale(1.2);
-        background-color: rgb(255, 254, 106);
+        transform: scale(1.25);
+        background-color: rgb(197, 197, 79);
     }
   
     100% {
@@ -100,7 +105,7 @@
 }
 
 .example_visited {
-    background-color: rgba(0, 190, 218, 0.75);
+    background-color: rgba(0, 162, 255, 0.75);
     width: 20px;
     height: 20px;
     transform: translateY(85%);
