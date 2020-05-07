@@ -1,0 +1,27 @@
+.example_node {
+    width: 20px;
+    height: 20px;
+    outline: 1px solid grey;
+    display: inline-block;
+    transform: translateY(85%);
+}
+
+.start {
+    background-color: green;
+}
+
+.finish {
+    background-color: red;
+}
+
+.wall {
+    background-color: darkslategrey;
+}
+
+.visited {
+    background-color: rgba(0, 162, 255, 0.75);
+}
+
+.path {
+    background-color: rgb(255, 254, 106);
+}

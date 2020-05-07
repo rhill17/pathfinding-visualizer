@@ -13,27 +13,23 @@ export default class Node extends Component {
             column, 
             isStart, 
             isFinish, 
-            isWall, 
-            isExampleStart, 
-            isExampleEnd, 
-            isExampleWall,
-            isExampleVisited,
-            isExamplePath} = this.props;
+            isWall,
+            onMouseDown,
+            onMouseEnter,
+            onMouseUp} = this.props;
 
         const specificName = isStart ? 'node_start' : 
             isFinish ? 'node_finish' :
             isWall ? 'node_wall' :
-            isExampleStart ? 'example_start' :
-            isExampleEnd ? 'example_end' :
-            isExampleWall ? 'example_wall' :
-            isExampleVisited ? 'example_visited' :
-            isExamplePath ? 'example_path' :
             '';
 
         return (
             <div 
                 id={`node-${row}-${column}`}
-                className={`node ${specificName}`}>
+                className={`node ${specificName}`}
+                onMouseDown={() => onMouseDown(row, column)}
+                onMouseEnter={() => onMouseEnter(row, column)}
+                onMouseUp={() => onMouseUp()}>
             </div>
         );
     }

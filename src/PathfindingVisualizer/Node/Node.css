@@ -82,39 +82,3 @@
         background-color: rgb(255, 254, 106);
     }
 }
-
-.example_start {
-    background-color: green;
-    width: 20px;
-    height: 20px;
-    transform: translateY(85%);
-}
-
-.example_end {
-    background-color: red;
-    width: 20px;
-    height: 20px;  
-    transform: translateY(85%);
-}
-
-.example_wall {
-    background-color: darkslategrey;
-    width: 20px;
-    height: 20px;
-    transform: translateY(85%);
-}
-
-.example_visited {
-    background-color: rgba(0, 162, 255, 0.75);
-    width: 20px;
-    height: 20px;
-    transform: translateY(85%);
-}
-
-.example_path {
-    background-color: rgb(255, 254, 106);
-    width: 20px;
-    height: 20px;
-    transform: translateY(85%);
-}
-
