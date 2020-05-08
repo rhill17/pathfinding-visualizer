@@ -197,7 +197,6 @@ export default class PathfindingVisualizer extends Component {
 
     render() {
         const {grid, mouseIsPressed} = this.state;
-
         return (
             <>
                 <div className="header">
@@ -205,14 +204,17 @@ export default class PathfindingVisualizer extends Component {
                         <div className="title">
                             <h1> Pathfinding Visualizer</h1>
                         </div>
-                        <div className="options">
-                            <button onClick={() => this.runDijkstras()}>
-                                Visualize Algorithm!
-                            </button>
-                            <button onClick={() => this.resetGrid()}>
-                                Reset Grid
-                            </button>
-                        </div>
+                        <ul>
+                            <li className='dropdown'>
+                                <button className='dropbtn'> Algorithms &#9662; </button>
+                                <div className='dropdown-content'>
+                                    <button> Dijkstra's </button>
+                                    <button> DFS </button>
+                                </div>
+                            </li>
+                            <li><button onClick={() => this.runDijkstras()}> Visualize Algorithm! </button></li>
+                            <li><button onClick={() => this.resetGrid()}> Reset Grid </button></li>
+                        </ul>
                     </div>
                 </div>
                 <div className="table_of_contents">
