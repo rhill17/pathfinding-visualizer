@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import './Node.css';
 
+// basic class for the Nodes that make up the grid
 export default class Node extends Component {
     constructor (props) {
         super(props);
@@ -9,6 +10,7 @@ export default class Node extends Component {
     }
 
     render() {
+        // knows its row and column, booleans for start/finish/wall nodes, and mouse handler
         const {row, 
             column, 
             isStart, 
@@ -18,6 +20,7 @@ export default class Node extends Component {
             onMouseEnter,
             onMouseUp} = this.props;
 
+        // specific name, adding the description to the end
         const specificName = isStart ? 'node_start' : 
             isFinish ? 'node_finish' :
             isWall ? 'node_wall' :

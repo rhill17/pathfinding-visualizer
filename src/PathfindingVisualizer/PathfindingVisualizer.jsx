@@ -13,6 +13,7 @@ const START_NODE_COLUMN = 11;
 const FINISH_NODE_ROW = 9;
 const FINISH_NODE_COLUMN = 49;
 
+// main class for project
 export default class PathfindingVisualizer extends Component {
     constructor(props) {
         super(props);
@@ -24,27 +25,32 @@ export default class PathfindingVisualizer extends Component {
         };
     }
 
+    // first construct the grid and set it to the state
     componentDidMount() {
         const grid = constructGrid();
         this.setState({grid});
     }
     
 
-    // when mouse is pressed, toggle the current node the mouse is over and update grid
+    // when mouse is pressed
     handleMouseDown(row, column) {
         const {grid} = this.state;
 
+        // if the node clicked is the start node set holdingStart flag to true
         if (grid[row][column].isStart) {
             this.setState({holdingStart: true});
         }
+        // else if node clicked is the finish node set holdingFinish flag to true
         else if (grid[row][column].isFinish) {
             this.setState({holdingFinish: true});
         }
+        // else a normal node is being clicked and toggle that node's isWall (normal -> wall, wall -> normal)
         else {
             const updatedGrid = updateGridWithWallToggled(grid, row, column);
             this.setState({grid: updatedGrid});
         }
 
+        // set mouseIsPressed flag to true
         this.setState({mouseIsPressed: true});
     }
 
@@ -54,21 +60,26 @@ export default class PathfindingVisualizer extends Component {
         var updatedGrid;
 
         if (!this.state.mouseIsPressed) return;
+        // holding start so call helper method with isStart parameter as true
         else if (holdingStart) {
             updatedGrid = updateGridMoveStartOrFinish(grid, row, column, true);
         }
+        // holding finish so call helper method with isStart parameter as finish
         else if (holdingFinish) {
             updatedGrid = updateGridMoveStartOrFinish(grid, row, column, false);
         }
+        // not holding either, means we are toggling walls
         else {
             updatedGrid = updateGridWithWallToggled(grid, row, column);
         }
 
+        // set main grid to be the updated grid
         this.setState({grid: updatedGrid});
     }
 
     // mouse is released
     handleMouseUp() {
+        // reset all flags to false
         this.setState({mouseIsPressed: false, holdingStart: false, holdingFinish: false});
     }
 
@@ -77,8 +88,11 @@ export default class PathfindingVisualizer extends Component {
     resetGrid() {
         // TODO - currently can reset mid run and clears what was on screen then continues to finish
         const {grid} = this.state;
+
+        // for each node in the grid
         for (const row of grid) {
             for (const node of row) {
+                // reset all the necessary attritubes to their defaults
                 node.distance = Infinity;
                 node.previousNode = null;
                 node.isVisited = false;
@@ -86,16 +100,20 @@ export default class PathfindingVisualizer extends Component {
                 node.isStart = false;
                 node.isFinish = false;
 
+                // get currentNode element
                 const currentNode = document.getElementById(`node-${node.row}-${node.column}`);
 
+                // if current node is located at the default starting node position, set it as the start node
                 if (node.row === START_NODE_ROW && node.column === START_NODE_COLUMN) {
                     node.isStart = true;
                     currentNode.className='node node_start';
                 }
+                // else if current node is located at default finish node position, set it as the finish node
                 else if (node.row === FINISH_NODE_ROW && node.column === FINISH_NODE_COLUMN) {
                     node.isFinish = true;
                     currentNode.className='node node_finish';
                 }
+                // else set the node to the default plain node
                 else currentNode.className='node';
             }
         }
@@ -106,22 +124,36 @@ export default class PathfindingVisualizer extends Component {
     // there are no visited nodes remaining from the last run
     preRunClearGrid() {
         const {grid} = this.state
+
+        // for each node in the grid
         for (const row of grid) {
             for (const node of row) {
+                // reset the attributes that are needed to run dijkstras
+                // but we will leave the walls, start, and finish node as is
                 node.distance = Infinity;
                 node.previousNode = null;
                 node.isVisited = false;
+
+                // get current node element
                 const currentNode = document.getElementById(`node-${node.row}-${node.column}`);
+
+                // if current node is the start node, display as so
                 if (node.isStart) currentNode.className='node node_start';
+                // else if the node is the finish node, display as so
                 else if (node.isFinish) currentNode.className='node node_finish';
+                // else if the node is a wall, display as so
                 else if (node.isWall) currentNode.className='node node_wall';
+                // else reset to a basic plain node
                 else currentNode.className='node';
             }
         }
     }
 
 
+    // method to visualize the dijkstras algorithm
     visualizeDijkstras(visitedNodes, shortestPath) {
+        // for each node in visitedNodes array
+        // reference by i so we can use the i as a way to space out the animations
         for (let i = 0; i <= visitedNodes.length; i++) {
             if (i === visitedNodes.length) {
               setTimeout(() => {
@@ -136,7 +168,10 @@ export default class PathfindingVisualizer extends Component {
           }
     }
 
+    // method to visualize the shortest path of the algorithm
     visualizeShortestPath(shortestPath) {
+        // for each node in visitedNodes array
+        // reference by i so we can use the i as a way to space out the animations
         for (let i = 0; i < shortestPath.length; i++) {
             setTimeout(() => {
               const node = shortestPath[i];
@@ -146,7 +181,9 @@ export default class PathfindingVisualizer extends Component {
     }
 
 
+    // method to run the dijkstras method
     runDijkstras() {
+        // call pre-run clear to make sure possible previous run is not affecting this run
         this.preRunClearGrid();
         const {grid} = this.state;
         const startNode = getStartNode(grid);
@@ -219,6 +256,7 @@ export default class PathfindingVisualizer extends Component {
     }
 }
 
+// helper method to construct the initial grid
 const constructGrid = () => {
     const grid = [];
         for (let row = 0; row < NUMBER_OF_ROWS; row++) {
@@ -231,6 +269,7 @@ const constructGrid = () => {
     return grid;
 }
 
+// helper method to create a node with all the default values that will be needed
 const createNode = (row, column) => {
     const node =  {
         row,
@@ -245,6 +284,7 @@ const createNode = (row, column) => {
     return node;
 }
 
+// helper method to update the grid with a node wall toggled (normal -> wall, wall -> normal)
 const updateGridWithWallToggled = (grid, row, column) => {
     const updatedGrid = grid.slice();
     const node = updatedGrid[row][column];
@@ -256,7 +296,8 @@ const updateGridWithWallToggled = (grid, row, column) => {
     return updatedGrid;
 }
 
-// isStart true means we are moving the start node, false means we are moving the finish node
+// helper method for moving the start or finish node around the grid
+// movingStart true means we are moving the start node, false means we are moving the finish node
 const updateGridMoveStartOrFinish = (grid, row, column, movingStart) => {
     const updatedGrid = grid.slice();
     // make old start/finish plain node
@@ -297,6 +338,7 @@ const updateGridMoveStartOrFinish = (grid, row, column, movingStart) => {
     return updatedGrid;
 }
 
+// helper method to get the current start node on the grid
 const getStartNode = (grid) => {
     for (const row of grid) {
         for (const node of row) {
@@ -305,6 +347,7 @@ const getStartNode = (grid) => {
     }
 }
 
+// helper method to get the current finish node on the grid
 const getFinishNode = (grid) => {
     for (const row of grid) {
         for (const node of row) {
