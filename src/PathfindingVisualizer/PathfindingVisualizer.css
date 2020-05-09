@@ -107,18 +107,19 @@ ul {
 
 
   .table_of_contents {
-    width: 60%;
+    width: 100%;
     height: 55px;
     margin: 0 auto;
     display: block;
+    float: left;
 }
 
 .key {
     display: table;
     height: 100%;
-    vertical-align: middle;
-    margin-left: auto;
-    margin-right: auto;
+    float: left;
+    padding-right: 16%;
+    padding-left: 1%;
 }
 
 .key em {
@@ -127,4 +128,33 @@ ul {
     padding-right: 7px;
     display: table-cell;
     vertical-align: middle;
+}
+
+.selected_alg {
+    display: table;
+    height: 100%;
+    vertical-align: middle;
+    float: left;
+    min-width: 20%;
+}
+
+.selected_alg p {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+    float: left;
+}
+
+.distance {
+    display: table;
+    height: 100%;
+    vertical-align: middle;
+    float: left;
+}
+
+.distance p {
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+  padding-right: 20px;
 }

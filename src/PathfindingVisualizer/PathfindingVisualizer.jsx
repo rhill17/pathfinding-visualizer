@@ -22,14 +22,23 @@ export default class PathfindingVisualizer extends Component {
             mouseIsPressed: false,
             holdingStart: false,
             holdingFinish: false,
+            currentAlgorithm: "Dijkstra's",
+            shortestPathDistance: 0,
+            finishNode: createNode(0,0),
         };
     }
 
     // first construct the grid and set it to the state
     componentDidMount() {
         const grid = constructGrid();
+        const startNode = grid[START_NODE_ROW][START_NODE_COLUMN];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COLUMN];
         this.setState({grid});
+        document.querySelector('.alg').innerHTML = this.state.currentAlgorithm;
+        document.querySelector('.dist').innerHTML = this.state.shortestPathDistance;  
     }
+
+    
     
 
     // when mouse is pressed
@@ -88,6 +97,10 @@ export default class PathfindingVisualizer extends Component {
     resetGrid() {
         // TODO - currently can reset mid run and clears what was on screen then continues to finish
         const {grid} = this.state;
+        this.setState({shortestPathDistance: 0});
+
+        // SOMETHING WEIRD, HAPPENS ON SECOND CLICK NOT FIRST
+        document.querySelector('.dist').innerHTML = this.state.shortestPathDistance;
 
         // for each node in the grid
         for (const row of grid) {
@@ -165,7 +178,7 @@ export default class PathfindingVisualizer extends Component {
               const node = visitedNodes[i];
               document.getElementById(`node-${node.row}-${node.column}`).className='node node_visited';
             }, 10 * i);
-          }
+        }
     }
 
     // method to visualize the shortest path of the algorithm
@@ -177,7 +190,10 @@ export default class PathfindingVisualizer extends Component {
               const node = shortestPath[i];
               document.getElementById(`node-${node.row}-${node.column}`).className ='node node_shortest_path';
             }, 50 * i);
-          }
+        }
+
+        this.setState({shortestPathDistance: this.state.finishNode.distance});
+        document.querySelector('.dist').innerHTML = this.state.shortestPathDistance;
     }
 
 
@@ -190,7 +206,16 @@ export default class PathfindingVisualizer extends Component {
         const finishNode = getFinishNode(grid);
         const visitedNodes = dijkstras(grid, startNode, finishNode);
         const shortestPath = getShortestPath(finishNode);
+        this.setState({finishNode});
         this.visualizeDijkstras(visitedNodes, shortestPath);
+    }
+
+
+    changeAlgorithm(selectedAlgorithm) {
+        this.setState({currentAlgorithm: selectedAlgorithm});
+
+        // SOMETHING WEIRD HAPPENING WITH THESE, HAPPENS ON THE SECOND CLICK NOT THE FIRST
+        document.querySelector('.alg').innerHTML = this.state.currentAlgorithm;
     }
 
 
@@ -208,8 +233,9 @@ export default class PathfindingVisualizer extends Component {
                             <li className='dropdown'>
                                 <button className='dropbtn'> Algorithms &#9662; </button>
                                 <div className='dropdown-content'>
-                                    <button> Dijkstra's </button>
-                                    <button> DFS </button>
+                                    <button onClick={() => this.changeAlgorithm("Dijkstra's")}> Dijkstra's </button>
+                                    <button onClick={() => this.changeAlgorithm("DFS")}> DFS </button>
+                                    <button onClick={() => this.changeAlgorithm("BFS")}> BFS </button>
                                 </div>
                             </li>
                             <li><button onClick={() => this.runDijkstras()}> Visualize Algorithm! </button></li>
@@ -229,6 +255,12 @@ export default class PathfindingVisualizer extends Component {
                         <ExampleNode isExampleVisited={true}></ExampleNode>
                         <em> Shortest Path: </em>
                         <ExampleNode isExamplePath={true}></ExampleNode>
+                    </div>
+                    <div className='selected_alg'>
+                        <p> Selected Algorithm: <span className='alg'></span></p>
+                    </div>
+                    <div className='distance'>
+                        <p> Distance: <span className='dist'></span></p>
                     </div>
                 </div>
                 <div className="grid">
@@ -254,7 +286,7 @@ export default class PathfindingVisualizer extends Component {
                     })}
                 </div>
             </>
-        );
+        );   
     }
 }
 
