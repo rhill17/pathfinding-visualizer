@@ -25,6 +25,7 @@ export default class PathfindingVisualizer extends Component {
             currentAlgorithm: "Dijkstra's",
             shortestPathDistance: 0,
             finishNode: createNode(0,0),
+            running: false,
         };
     }
 
@@ -96,38 +97,38 @@ export default class PathfindingVisualizer extends Component {
     // reset grid to original
     resetGrid() {
         // TODO - currently can reset mid run and clears what was on screen then continues to finish
-        const {grid} = this.state;
-        this.setState({shortestPathDistance: 0});
+        if (!this.state.running) {
+            const {grid} = this.state;
+            this.setState({shortestPathDistance: 0});
+            document.querySelector('.dist').innerHTML = 0;
 
-        // SOMETHING WEIRD, HAPPENS ON SECOND CLICK NOT FIRST
-        document.querySelector('.dist').innerHTML = this.state.shortestPathDistance;
+            // for each node in the grid
+            for (const row of grid) {
+                for (const node of row) {
+                    // reset all the necessary attritubes to their defaults
+                    node.distance = Infinity;
+                    node.previousNode = null;
+                    node.isVisited = false;
+                    node.isWall = false;
+                    node.isStart = false;
+                    node.isFinish = false;
 
-        // for each node in the grid
-        for (const row of grid) {
-            for (const node of row) {
-                // reset all the necessary attritubes to their defaults
-                node.distance = Infinity;
-                node.previousNode = null;
-                node.isVisited = false;
-                node.isWall = false;
-                node.isStart = false;
-                node.isFinish = false;
+                    // get currentNode element
+                    const currentNode = document.getElementById(`node-${node.row}-${node.column}`);
 
-                // get currentNode element
-                const currentNode = document.getElementById(`node-${node.row}-${node.column}`);
-
-                // if current node is located at the default starting node position, set it as the start node
-                if (node.row === START_NODE_ROW && node.column === START_NODE_COLUMN) {
-                    node.isStart = true;
-                    currentNode.className='node node_start';
+                    // if current node is located at the default starting node position, set it as the start node
+                    if (node.row === START_NODE_ROW && node.column === START_NODE_COLUMN) {
+                        node.isStart = true;
+                        currentNode.className='node node_start';
+                    }
+                    // else if current node is located at default finish node position, set it as the finish node
+                    else if (node.row === FINISH_NODE_ROW && node.column === FINISH_NODE_COLUMN) {
+                        node.isFinish = true;
+                        currentNode.className='node node_finish';
+                    }
+                    // else set the node to the default plain node
+                    else currentNode.className='node';
                 }
-                // else if current node is located at default finish node position, set it as the finish node
-                else if (node.row === FINISH_NODE_ROW && node.column === FINISH_NODE_COLUMN) {
-                    node.isFinish = true;
-                    currentNode.className='node node_finish';
-                }
-                // else set the node to the default plain node
-                else currentNode.className='node';
             }
         }
     }
@@ -192,30 +193,54 @@ export default class PathfindingVisualizer extends Component {
             }, 50 * i);
         }
 
+        // update distance on screen
         this.setState({shortestPathDistance: this.state.finishNode.distance});
         document.querySelector('.dist').innerHTML = this.state.shortestPathDistance;
+
+        // wait until animation is finished and change running back to false
+        setTimeout(() => { 
+            this.setState({running: false});
+        }, 50 * shortestPath.length);
     }
 
 
-    // method to run the dijkstras method
+    // method to run the dijkstras algorithm
     runDijkstras() {
-        // call pre-run clear to make sure possible previous run is not affecting this run
-        this.preRunClearGrid();
-        const {grid} = this.state;
-        const startNode = getStartNode(grid);
-        const finishNode = getFinishNode(grid);
-        const visitedNodes = dijkstras(grid, startNode, finishNode);
-        const shortestPath = getShortestPath(finishNode);
-        this.setState({finishNode});
-        this.visualizeDijkstras(visitedNodes, shortestPath);
+        if (!this.state.running) {
+            // call pre-run clear to make sure possible previous run is not affecting this run
+            this.preRunClearGrid();
+            const {grid} = this.state;
+            const startNode = getStartNode(grid);
+            const finishNode = getFinishNode(grid);
+            const visitedNodes = dijkstras(grid, startNode, finishNode);
+            const shortestPath = getShortestPath(finishNode);
+            this.setState({finishNode, running: true});
+            this.visualizeDijkstras(visitedNodes, shortestPath);
+        }
     }
 
+    // method to run the Depth first search algorithm
+    runDFS() {
 
+    }
+
+    // method to run the Breadth first search algorithm
+    runBFS() {
+
+    }
+
+    runAlgorithm() {
+        const {currentAlgorithm} = this.state;
+
+        if (currentAlgorithm == "Dijkstra's") this.runDijkstras();
+        else if (currentAlgorithm == "DFS") this.runDFS();
+        else if (currentAlgorithm == "BFS") this.runBFS();
+    }
+
+    // function to change the current algorith that will be run
     changeAlgorithm(selectedAlgorithm) {
         this.setState({currentAlgorithm: selectedAlgorithm});
-
-        // SOMETHING WEIRD HAPPENING WITH THESE, HAPPENS ON THE SECOND CLICK NOT THE FIRST
-        document.querySelector('.alg').innerHTML = this.state.currentAlgorithm;
+        document.querySelector('.alg').innerHTML = selectedAlgorithm;
     }
 
 
@@ -238,7 +263,7 @@ export default class PathfindingVisualizer extends Component {
                                     <button onClick={() => this.changeAlgorithm("BFS")}> BFS </button>
                                 </div>
                             </li>
-                            <li><button onClick={() => this.runDijkstras()}> Visualize Algorithm! </button></li>
+                            <li><button onClick={() => this.runAlgorithm()}> Visualize Algorithm! </button></li>
                             <li><button onClick={() => this.resetGrid()}> Reset Grid </button></li>
                         </ul>
                     </div>
